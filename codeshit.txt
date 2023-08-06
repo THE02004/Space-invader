@@ -1,0 +1,87 @@
+DrawLine((int)camera.target.x, -screenHeight*10, (int)camera.target.x, screenHeight*10, GREEN);
+                DrawLine(-screenWidth*10, (int)camera.target.y, screenWidth*10, (int)camera.target.y, GREEN);
+     //========================================================
+    CameraMode() 
+      if (IsKeyDown(KEY_A)) camera.rotation--;
+      else if (IsKeyDown(KEY_S)) camera.rotation++;
+      if (camera.rotation > 40) camera.rotation = 40;
+      else if (camera.rotation < -40) camera.rotation = -40;
+      camera.zoom += ((float)GetMouseWheelMove()*0.05f);
+      if (camera.zoom > 3.0f) camera.zoom = 3.0f;
+      else if (camera.zoom < 0.1f) camera.zoom = 0.1f;
+      if (IsKeyPressed(KEY_R))
+      {
+        camera.zoom = 1.0f;
+        camera.rotation = 0.0f;
+      }
+    //========================================================
+    BeginMode2D(camera);
+        //================================================
+    DrawLine((int)camera.target.x, -hei*10, (int)camera.target.x, hei*10, GREEN);
+    DrawLine(-wid*10, (int)camera.target.y, wid*10, (int)camera.target.y, GREEN);
+    /=================================================
+      //------------------------------------------------------------- 
+  vector2 player = GetMousePosition();
+   Camera2D camera = { 0 };
+    camera.target = (Vector2){ player.x + 20.0f, player.y + 20.0f };
+    camera.offset = (Vector2){ wid/2.0f, hei/2.0f };
+    camera.rotation = 0.0f;
+    camera.zoom = -1.0f;
+//---------------------------------------------------------------
+
+
+
+
+
+int main(){
+int wid = 1000;
+int hei = 1920;
+Vector2 victor = {0,0};
+Rectangle screen = {0,0,0,0};
+Rectangle Rshep = {0,0,0,0};
+ InitWindow(hei, wid, "Space invader");
+  SetTargetFPS(60);
+  const unsigned int CELL_SIZE = 1;
+  const unsigned int GAME_WIDTH = GetScreenWidth() / CELL_SIZE;
+  const unsigned int GAME_HEIGHT = GetScreenHeight() / CELL_SIZE;
+  printf("%u, %u\n",GAME_WIDTH,GAME_HEIGHT);
+  bool **tab;
+  tab = tableaux(1000,1000);
+  Image img = LoadImage("Space-Invaders-Ship.png");
+  Texture2D img2d = LoadTexture("background.png"); 
+  Texture2D playership = LoadTexture("Space-Invaders-Ship.png"); 
+  //---------------------------------------------------------
+ Camera2D cam;
+  cam.offset = (Vector2){wid, hei};
+  cam.target = (Vector2){0, 0};
+  cam.rotation = 0;
+  cam.zoom = 1;
+
+    while (!WindowShouldClose()){
+    //====================================
+    cam.zoom *= 1 + ((float)GetMouseWheelMove() * 0.15f);
+    //====================================
+    BeginDrawing();
+    ClearBackground(BLACK);
+    DrawTexturePro(img2d,screen,screen,victor,0,WHITE);    
+    //=========================================================
+    BeginMode2D(cam);
+    //==========================================================
+    Vector2 position =  GetMousePosition();
+    if (MOUSE_BUTTON_LEFT){
+    position =  GetMousePosition();
+    }
+    if (position.x >= 0.0 && position.x <=hei && position.y >= 0.0 && position.y <=wid){
+    Vector2 realpose = {position.x -250 + ((float)GetMouseWheelMove() * 0.15f);,position.y-350 + ((float)GetMouseWheelMove() * 0.15f);};
+    DrawTextureRec(playership,Rshep,position,WHITE);
+    //============================================================
+    }
+  EndDrawing();
+  EndMode2D();
+}
+//UnloadTexture(img);
+UnloadImage(img);
+UnloadTexture(playership);
+UnloadTexture(img2d);
+CloseWindow();
+}
