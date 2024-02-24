@@ -52,8 +52,3 @@ clean:
 	del /Q /F .\$(TARGET)
 	del /Q /F .\$(DTARGET)
 	$(CLS)
-
-
-
-
-
